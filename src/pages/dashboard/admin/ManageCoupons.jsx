@@ -22,7 +22,7 @@ const ManageCoupons = () => {
   const isDarkMode = true; // Replace with useContext(ThemeContext) if available
 
   // Theme classes
-  const bgMain = isDarkMode ? "bg-gray-800" : "bg-gray-50";
+  const bgMain = isDarkMode ? "bg-gray-900" : "bg-gray-50";
   const cardBg = isDarkMode ? "bg-gray-800" : "bg-white";
   const textColor = isDarkMode ? "text-white" : "text-gray-900";
   const borderColor = isDarkMode ? "border-gray-700" : "border-gray-200";
@@ -164,10 +164,10 @@ const ManageCoupons = () => {
 
   return (
     <section
-      className={`min-h-screen p-4 bg-gray-800 md:p-8 ${bgMain} ${textColor}`}
+      className={`min-h-screen p-4 bg-gray-950 md:p-8 ${bgMain} ${textColor}`}
     >
       <div
-        className={`max-w-4xl mx-auto bg-gray-900 p-6 rounded-lg ${cardBg} shadow-lg`}
+        className={`max-w-4xl mx-auto bg-gray-700 p-6 rounded-lg ${cardBg} shadow-lg`}
       >
         {/* Header */}
         <div className="mb-8">
@@ -194,7 +194,7 @@ const ManageCoupons = () => {
         {/* Coupons Table */}
         <div className="overflow-x-auto rounded-lg shadow-lg">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead className={isDarkMode ? "bg-gray-800" : "bg-gray-100"}>
+            <thead className={isDarkMode ? "bg-gray-700" : "bg-gray-100"}>
               <tr>
                 {["title", "code", "discount", "description"].map((field) => (
                   <th
