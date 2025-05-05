@@ -1,3 +1,5 @@
+"use client";
+
 import { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
@@ -5,7 +7,6 @@ import { AuthContexts } from "../../authProvider/AuthProvider";
 import { Vortex } from "react-loader-spinner";
 import { Navigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
-import { useTypewriter, Cursor } from "react-simple-typewriter";
 
 const ApartmentCard = ({ apartment }) => {
   const { user, loading } = useContext(AuthContexts);
@@ -84,12 +85,6 @@ const ApartmentCard = ({ apartment }) => {
     }
   };
 
-  const [text] = useTypewriter({
-    words: ["Now!", "Today!", "Tomorrow!", "Repeat!"],
-    loop: true,
-    typeSpeed: 70,
-  });
-
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -109,43 +104,79 @@ const ApartmentCard = ({ apartment }) => {
   if (!user) {
     return <Navigate to="/login" state={{ pathname: location.pathname }} />;
   }
+
   return (
     <>
-      <div className="card bg-base-100 shadow-xl relative">
+      <div className="card glass hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
+        {/* Status Badge */}
         <div
-          className={`absolute top-2 right-2 px-2 py-1 rounded-lg text-white text-xs font-bold ${
+          className={`absolute top-3 right-3 badge ${
             apartment.bookingStatus === "available"
-              ? "bg-green-500"
-              : "bg-red-500"
-          }`}
+              ? "badge-success"
+              : "badge-error"
+          } badge-lg z-10 shadow-lg`}
         >
           {apartment.bookingStatus === "available" ? "Available" : "Booked"}
         </div>
 
-        <figure>
+        {/* Image with Overlay */}
+        <figure className="relative">
           <img
-            src={apartment.image_url}
+            src={apartment.image_url || "/placeholder.svg"}
             alt={`Apartment ${apartment.apartment_no}`}
-            className="w-full h-48 object-cover rounded-t-lg"
+            className="h-56 w-full object-cover"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+          <div className="absolute bottom-2 left-3 text-white">
+            <div className="badge badge-primary">{apartment.block_name}</div>
+          </div>
         </figure>
-        <div className="card-body">
-          <h2 className="card-title text-lg font-bold">
-            Apartment No: {apartment.apartment_no}
+
+        {/* Card Body */}
+        <div className="card-body bg-base-100 text-base-content">
+          <h2 className="card-title text-xl font-bold flex justify-between">
+            <span>Apartment {apartment.apartment_no}</span>
+            <span className="text-primary text-2xl font-extrabold">
+              ${apartment.rent}
+            </span>
           </h2>
-          <p className="text-sm text-gray-500">
-            Floor No: {apartment.floor_no}
-          </p>
-          <p className="text-sm text-gray-500">Block: {apartment.block_name}</p>
-          <p className="text-sm text-gray-500">Rent: {apartment.rent} Tk</p>
-          <div className="card-actions justify-end">
+
+          <div className="flex flex-wrap gap-2 my-2">
+            <div className="badge badge-outline">
+              Floor {apartment.floor_no}
+            </div>
+            <div className="badge badge-outline">
+              Block {apartment.block_name}
+            </div>
+          </div>
+
+          <div className="divider my-1"></div>
+
+          <div className="card-actions justify-end mt-2">
             {apartment.bookingStatus === "available" ? (
-              <button className="btn btn-primary">
-                <a href={`#modal-${apartment.apartment_no}`}>Agreement</a>
-              </button>
+              <label
+                htmlFor={`modal-${apartment.apartment_no}`}
+                className="btn btn-primary btn-block bg-gradient-to-r from-purple-600 to-indigo-600 border-none hover:from-purple-700 hover:to-indigo-700"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 mr-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                Book Now
+              </label>
             ) : (
               <button
-                className="btn "
+                className="btn btn-block btn-disabled"
                 onClick={() =>
                   Swal.fire({
                     icon: "error",
@@ -156,50 +187,94 @@ const ApartmentCard = ({ apartment }) => {
                   })
                 }
               >
-                Booked
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 mr-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                Already Booked
               </button>
             )}
           </div>
         </div>
       </div>
 
-      <div
-        className="modal"
+      {/* Modal */}
+      <input
+        type="checkbox"
         id={`modal-${apartment.apartment_no}`}
-        role="dialog"
-      >
-        <div className="modal-box">
-          <h3 className="text-lg font-bold">Confirm Agreement</h3>
-          <form onSubmit={handleAgreement}>
-            <div className="form-control w-full">
-              <label className="label">
-                <span className="label-text">Name</span>
-              </label>
-              <input
-                type="text"
-                name="user_name"
-                value={user?.displayName}
-                onChange={handleChange}
-                className="input input-bordered"
-                readOnly
-              />
-            </div>
-            <div className="form-control w-full mt-2">
-              <label className="label">
-                <span className="label-text">Email</span>
-              </label>
-              <input
-                type="email"
-                name="user_email"
-                value={user?.email}
-                onChange={handleChange}
-                className="input input-bordered"
-                readOnly
-              />
-            </div>
+        className="modal-toggle"
+      />
+      <div className="modal" role="dialog">
+        <div className="modal-box bg-base-200 max-w-3xl">
+          <h3 className="text-2xl font-bold text-center mb-6 text-primary">
+            Apartment Agreement
+          </h3>
 
-            <div className="grid grid-cols-2 gap-4 mt-4">
-              <div className="form-control">
+          <div className="bg-base-100 p-4 rounded-lg mb-6">
+            <div className="flex items-center gap-4">
+              <div className="avatar">
+                <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                  <img
+                    src={apartment.image_url || "/placeholder.svg"}
+                    alt="Apartment"
+                  />
+                </div>
+              </div>
+              <div>
+                <h4 className="text-lg font-bold">
+                  Apartment {apartment.apartment_no}
+                </h4>
+                <p className="text-sm opacity-70">
+                  Block {apartment.block_name}, Floor {apartment.floor_no}
+                </p>
+                <p className="text-primary font-bold">
+                  ${apartment.rent}/month
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <form onSubmit={handleAgreement} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text">Name</span>
+                </label>
+                <input
+                  type="text"
+                  name="user_name"
+                  value={user?.displayName}
+                  onChange={handleChange}
+                  className="input input-bordered"
+                  readOnly
+                />
+              </div>
+
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text">Email</span>
+                </label>
+                <input
+                  type="email"
+                  name="user_email"
+                  value={user?.email}
+                  onChange={handleChange}
+                  className="input input-bordered"
+                  readOnly
+                />
+              </div>
+
+              <div className="form-control w-full">
                 <label className="label">
                   <span className="label-text">Apartment No</span>
                 </label>
@@ -212,7 +287,8 @@ const ApartmentCard = ({ apartment }) => {
                   readOnly
                 />
               </div>
-              <div className="form-control">
+
+              <div className="form-control w-full">
                 <label className="label">
                   <span className="label-text">Floor No</span>
                 </label>
@@ -225,7 +301,8 @@ const ApartmentCard = ({ apartment }) => {
                   readOnly
                 />
               </div>
-              <div className="form-control">
+
+              <div className="form-control w-full">
                 <label className="label">
                   <span className="label-text">Block</span>
                 </label>
@@ -238,7 +315,8 @@ const ApartmentCard = ({ apartment }) => {
                   readOnly
                 />
               </div>
-              <div className="form-control">
+
+              <div className="form-control w-full">
                 <label className="label">
                   <span className="label-text">Rent</span>
                 </label>
@@ -253,24 +331,51 @@ const ApartmentCard = ({ apartment }) => {
               </div>
             </div>
 
-            <div className="modal-action mt-4">
+            <div className="alert alert-info shadow-lg">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                className="stroke-current flex-shrink-0 w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              <div>
+                <h3 className="font-bold">Please Note!</h3>
+                <div className="text-xs">
+                  By submitting this form, you agree to our terms and
+                  conditions.
+                </div>
+              </div>
+            </div>
+
+            <div className="modal-action mt-6">
               <button
                 type="submit"
                 className={`btn btn-primary ${isSubmitting ? "loading" : ""}`}
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Submitting..." : "Confirm"}
+                {isSubmitting ? "Submitting..." : "Confirm Agreement"}
               </button>
-              <a
-                href="#"
+              <label
+                htmlFor={`modal-${apartment.apartment_no}`}
                 id={`close-modal-${apartment.apartment_no}`}
-                className="btn btn-outline"
+                className="btn"
               >
                 Cancel
-              </a>
+              </label>
             </div>
           </form>
         </div>
+        <label
+          className="modal-backdrop"
+          htmlFor={`modal-${apartment.apartment_no}`}
+        ></label>
       </div>
     </>
   );

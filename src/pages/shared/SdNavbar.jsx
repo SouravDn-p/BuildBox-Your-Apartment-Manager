@@ -5,17 +5,21 @@ import {
   FaUserCircle,
   FaGavel,
   FaBloggerB,
+  FaBuilding,
+  FaHome,
+  FaSignOutAlt,
 } from "react-icons/fa";
 import { IoMdContact } from "react-icons/io";
 import { FiInfo } from "react-icons/fi";
 import { Bell } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
-import { AuthContexts } from "../authProvider/AuthProvider";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AuthContexts } from "../../authProvider/AuthProvider";
 
 const SdNavbar = () => {
-  const { user, theme, toggleTheme } = useContext(AuthContexts);
+  const { user, theme, toggleTheme, signOutUser } = useContext(AuthContexts);
   const isDarkMode = true;
   const location = useLocation();
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -47,6 +51,16 @@ const SdNavbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const handleSignOut = () => {
+    signOutUser()
+      .then(() => {
+        navigate("/login");
+      })
+      .catch((err) => {
+        console.error("Sign-Out error:", err.message);
+      });
+  };
+
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
@@ -65,27 +79,21 @@ const SdNavbar = () => {
       : "flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-indigo-100 text-indigo-800";
 
   const navRoutes = [
-    { path: "/", label: "Home", icon: null },
+    { path: "/", label: "Home", icon: <FaHome className="w-5 h-5" /> },
     ...(user?.email
       ? [
           {
-            path: "/auction",
-            label: "Auction",
-            icon: <FaGavel className="w-5 h-5" />,
+            path: "/apartment",
+            label: "Apartment",
+            icon: <FaBuilding className="w-5 h-5" />,
           },
         ]
       : []),
-    {
-      path: "/aboutUs",
-      label: "About Us",
-      icon: <FiInfo className="w-5 h-5" />,
-    },
-    { path: "/blogs", label: "Blog", icon: <FaBloggerB className="w-5 h-5" /> },
-    {
-      path: "/contactUs",
-      label: "Contact Us",
-      icon: <IoMdContact className="w-5 h-5" />,
-    },
+    // {
+    //   path: "/aboutUs",
+    //   label: "About Us",
+    //   icon: <FiInfo className="w-5 h-5" />,
+    // },
   ];
 
   return (
@@ -211,8 +219,7 @@ const SdNavbar = () => {
                     <img
                       src={
                         user?.photoURL ||
-                        "https://i.ibb.co/Y75m1Mk9/Final-Boss.jpg" ||
-                        "/placeholder.svg"
+                        "https://i.ibb.co/Y75m1Mk9/Final-Boss.jpg"
                       }
                       alt="Profile"
                       className="w-9 h-9 rounded-full border-2 border-pink-400 transition-all duration-300 hover:border-purple-400"
@@ -259,7 +266,7 @@ const SdNavbar = () => {
                             : "text-indigo-800 hover:bg-indigo-100 hover:text-indigo-900"
                         }`}
                       >
-                        <FaUserCircle
+                        <FaHome
                           className={`${
                             isDarkMode ? "text-indigo-300" : "text-indigo-700"
                           }`}
@@ -285,23 +292,27 @@ const SdNavbar = () => {
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent to-transparent hover:from-pink-500/5 hover:to-purple-400/5 transition-all duration-200 opacity-0 hover:opacity-100"></div>
                       </Link>
 
-                      <Link
-                        to="/dashboard"
-                        className={`flex items-center gap-3 py-2 px-4 transition-all duration-200 relative overflow-hidden ${
+                      <button
+                        className={`flex items-center gap-3 w-full py-2 px-4 transition-all duration-200 relative overflow-hidden ${
                           isDarkMode
-                            ? "text-indigo-100 hover:bg-indigo-700/70 hover:text-white"
+                            ? "text-indigo-100 hover:bg-red-700/70 hover:text-white"
                             : "text-indigo-800 hover:bg-indigo-100 hover:text-indigo-900"
                         }`}
                         onClick={() => setShowProfileMenu(false)}
                       >
-                        <FaUserCircle
+                        <FaSignOutAlt
                           className={`${
                             isDarkMode ? "text-indigo-300" : "text-indigo-700"
                           }`}
                         />
-                        <span className="relative z-10">Logout</span>
+                        <button
+                          onClick={handleSignOut}
+                          className="relative z-10"
+                        >
+                          Logout
+                        </button>
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent to-transparent hover:from-pink-500/5 hover:to-purple-400/5 transition-all duration-200 opacity-0 hover:opacity-100"></div>
-                      </Link>
+                      </button>
                     </div>
                   )}
                 </div>
@@ -518,22 +529,24 @@ const SdNavbar = () => {
                 }`}
               >
                 {user?.email ? (
-                  <Link
-                    to="/dashboard"
-                    className={`w-full flex items-center gap-3 py-2 px-3 rounded-lg transition-all duration-200 ${
-                      isDarkMode
-                        ? "bg-red-900/50 text-red-300 hover:bg-red-900/70"
-                        : "bg-red-50 text-red-600 hover:bg-red-100"
-                    }`}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <FaUserCircle
-                      className={`${
-                        isDarkMode ? "text-red-300" : "text-red-600"
+                  <>
+                    <Link
+                      to="/dashboard"
+                      className={`w-full flex items-center gap-3 py-2 px-3 rounded-lg transition-all duration-200 ${
+                        isDarkMode
+                          ? "bg-red-900/50 text-red-300 hover:bg-red-900/70"
+                          : "bg-red-50 text-red-600 hover:bg-red-100"
                       }`}
-                    />
-                    <span>Logout</span>
-                  </Link>
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <FaUserCircle
+                        className={`${
+                          isDarkMode ? "text-red-300" : "text-red-600"
+                        }`}
+                      />
+                    </Link>
+                    <button onClick={handleSignOut}>Logout</button>
+                  </>
                 ) : (
                   <Link
                     to="/login"

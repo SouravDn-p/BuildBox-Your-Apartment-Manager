@@ -1,5 +1,5 @@
 {
-  "name": "task-manager",
+  "name": "sd-buildbox",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -16,8 +16,10 @@
     "aos": "^2.3.4",
     "axios": "^1.7.9",
     "cors": "^2.8.5",
+    "docx": "^9.4.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "file-saver": "^2.0.5",
     "firebase": "^11.3.1",
     "framer-motion": "^12.9.4",
     "leaflet": "^1.9.4",

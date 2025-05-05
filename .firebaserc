@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "task-manager-13e7e"
-  }
+    "sd-buildbox": "sd-buildbox"
+  },
+  "targets": {},
+  "etags": {}
 }

@@ -103,6 +103,7 @@ const AuthProvider = ({ children }) => {
     setCurrentPaymentId,
     couponCode,
     setCouponCode,
+    toggleTheme,
   };
 
   return (

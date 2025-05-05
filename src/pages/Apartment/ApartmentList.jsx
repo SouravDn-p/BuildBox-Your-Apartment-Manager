@@ -1,12 +1,6 @@
+"use client";
+
 import { useState } from "react";
-import {
-  Box,
-  TextField,
-  Button,
-  Grid,
-  Pagination,
-  Typography,
-} from "@mui/material";
 import ApartmentCard from "./ApartmentCard";
 import { useTypewriter, Cursor } from "react-simple-typewriter";
 
@@ -27,8 +21,8 @@ const ApartmentList = ({ apartments }) => {
     currentPage * itemsPerPage
   );
 
-  const handlePageChange = (_, value) => {
-    setCurrentPage(value);
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
 
   const [text] = useTypewriter({
@@ -36,121 +30,151 @@ const ApartmentList = ({ apartments }) => {
     loop: true,
     typeSpeed: 70,
   });
+
   return (
-    <Box sx={{ padding: 4 }}>
-      <Box
-        sx={{
-          display: "flex",
-          gap: 2,
-          alignItems: "center",
-          marginBottom: 4,
-          flexWrap: "wrap",
-          justifyContent: "center",
-        }}
-      >
-        <TextField
-          type="number"
-          label="Min Rent"
-          value={rentRange.min}
-          onChange={(e) =>
-            setRentRange({ ...rentRange, min: Number(e.target.value) })
-          }
-          variant="outlined"
-          size="small"
-          sx={{
-            flex: 1,
-            minWidth: "120px",
-            maxWidth: "220px",
-            backgroundColor: "#f7f7f7",
-            borderRadius: "12px",
-            boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
-            "& .MuiInputBase-root": {
-              padding: "10px",
-            },
-          }}
-        />
-        <TextField
-          type="number"
-          label="Max Rent"
-          value={rentRange.max}
-          onChange={(e) =>
-            setRentRange({ ...rentRange, max: Number(e.target.value) })
-          }
-          variant="outlined"
-          size="small"
-          sx={{
-            flex: 1,
-            minWidth: "120px",
-            maxWidth: "220px",
-            backgroundColor: "#f7f7f7",
-            borderRadius: "12px",
-            boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
-            "& .MuiInputBase-root": {
-              padding: "10px",
-            },
-          }}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setCurrentPage(1)}
-          sx={{
-            minWidth: "180px",
-            padding: "12px 20px",
-            backgroundColor: "#6200ea",
-            borderRadius: "12px",
-            textTransform: "none",
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)",
-            "&:hover": {
-              backgroundColor: "#3700b3",
-            },
-            transition: "background-color 0.3s ease",
-          }}
-        >
-          Search
-        </Button>
-      </Box>
-
-      <div>
-        <h1
-          className="text-4xl font-bold text-center pt-4"
-          style={{ color: "white", fontWeight: "bold" }}
-        >
-          Book Apartment 
-          <span className="text-red-500 "> {text}</span>
-          <span>
-            <Cursor cursorStyle="|" />
-          </span>
+    <div className="container mx-auto p-4 bg-gradient-to-br from-purple-900 to-indigo-800 rounded-xl shadow-2xl">
+      {/* Hero Section */}
+      <div className="text-center mb-10 pt-6">
+        <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-purple-400 mb-4">
+          Find Your Dream Apartment
         </h1>
+        <div className="text-4xl font-bold text-center">
+          Book Apartment <span className="text-teal-400">{text}</span>
+          <span>
+            <Cursor cursorStyle="|" cursorColor="#2dd4bf" />
+          </span>
+        </div>
+        <p className="text-gray-300 mt-4 max-w-2xl mx-auto">
+          Discover the perfect living space with our curated selection of
+          premium apartments
+        </p>
       </div>
-      <Typography variant="h6" sx={{ marginBottom: 2 }}>
-        Showing {paginatedApartments.length} Apartments
-      </Typography>
 
-      <Grid container spacing={3}>
+      {/* Filter Section */}
+      <div className="glass p-6 rounded-2xl mb-8 backdrop-blur-lg bg-white/10">
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
+          <div className="form-control w-full max-w-xs">
+            <label className="label">
+              <span className="label-text text-white">Minimum Rent</span>
+            </label>
+            <input
+              type="number"
+              placeholder="Min Rent"
+              value={rentRange.min}
+              onChange={(e) =>
+                setRentRange({ ...rentRange, min: Number(e.target.value) })
+              }
+              className="input input-bordered w-full bg-purple-900/50 border-purple-500 text-white placeholder-purple-300"
+            />
+          </div>
+
+          <div className="form-control w-full max-w-xs">
+            <label className="label">
+              <span className="label-text text-white">Maximum Rent</span>
+            </label>
+            <input
+              type="number"
+              placeholder="Max Rent"
+              value={rentRange.max}
+              onChange={(e) =>
+                setRentRange({ ...rentRange, max: Number(e.target.value) })
+              }
+              className="input input-bordered w-full bg-purple-900/50 border-purple-500 text-white placeholder-purple-300"
+            />
+          </div>
+
+          <div className="mt-8">
+            <button
+              onClick={() => setCurrentPage(1)}
+              className="btn btn-primary bg-gradient-to-r from-purple-600 to-indigo-600 border-none hover:from-purple-700 hover:to-indigo-700 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-purple-500/30 transition-all duration-300 animate-pulse hover:animate-none"
+            >
+              <span className="mr-2">Search</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Results Count */}
+      <div className="flex justify-between items-center mb-6">
+        <div className="badge badge-lg badge-primary p-3 font-semibold">
+          {paginatedApartments.length} Apartments Found
+        </div>
+        <div className="text-sm text-gray-300">
+          Page {currentPage} of {totalPages || 1}
+        </div>
+      </div>
+
+      {/* Apartments Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {paginatedApartments.map((apartment) => (
-          <Grid item xs={12} sm={6} md={4} key={apartment.id}>
-            <ApartmentCard key={apartment.id} apartment={apartment} />
-          </Grid>
+          <ApartmentCard key={apartment._id} apartment={apartment} />
         ))}
-      </Grid>
+      </div>
 
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          marginTop: 4,
-        }}
-      >
-        <Pagination
-          count={totalPages}
-          page={currentPage}
-          onChange={handlePageChange}
-          color="primary"
-          size="large"
-        />
-      </Box>
-    </Box>
+      {/* Empty State */}
+      {paginatedApartments.length === 0 && (
+        <div className="text-center py-16">
+          <div className="text-5xl mb-4">😢</div>
+          <h3 className="text-2xl font-bold text-white mb-2">
+            No Apartments Found
+          </h3>
+          <p className="text-gray-300">Try adjusting your search criteria</p>
+        </div>
+      )}
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex justify-center mt-10">
+          <div className="btn-group">
+            <button
+              className="btn btn-outline btn-sm text-white"
+              onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+              disabled={currentPage === 1}
+            >
+              «
+            </button>
+
+            {[...Array(totalPages)].map((_, index) => (
+              <button
+                key={index}
+                className={`btn btn-sm ${
+                  currentPage === index + 1
+                    ? "btn-primary"
+                    : "btn-outline text-white"
+                }`}
+                onClick={() => handlePageChange(index + 1)}
+              >
+                {index + 1}
+              </button>
+            ))}
+
+            <button
+              className="btn btn-outline btn-sm text-white"
+              onClick={() =>
+                handlePageChange(Math.min(totalPages, currentPage + 1))
+              }
+              disabled={currentPage === totalPages}
+            >
+              »
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -1,15 +1,18 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Footer from "../pages/Footer";
-import Navbar from "../pages/Navbar";
+import SdNavbar from "../pages/shared/SdNavbar";
 
 export default function Main() {
   const location = useLocation();
-  const isLogin = location.pathname.includes('login');
+  const isLogin =
+    location.pathname.includes("login") ||
+    location.pathname.includes("register") ||
+    location.pathname.includes("dashboard");
   return (
     <div>
-     {isLogin || <Navbar />}
+      {isLogin || <SdNavbar />}
       <Outlet />
-     { isLogin || <Footer />}
+      {isLogin || <Footer />}
     </div>
   );
 }

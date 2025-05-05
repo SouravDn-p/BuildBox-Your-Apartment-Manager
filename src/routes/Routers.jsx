@@ -5,7 +5,6 @@ import ErrorPage from "../pages/ErrorPage";
 import Login from "../authPages/Login";
 import Register from "../authPages/Register";
 import PrivateRoute from "./PrivateRoute";
-import axios from "axios";
 import Home from "../pages/home/Home.jsx";
 import Apartment from "../pages/Apartment/Apartment.jsx";
 import MyProfileInfo from "../pages/dashboard/DashboardShared/MyProfileInfo.jsx";
