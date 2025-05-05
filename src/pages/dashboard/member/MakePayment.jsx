@@ -99,7 +99,7 @@ const MakePayment = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -234,7 +234,6 @@ const MakePayment = () => {
 
   return (
     <section className="w-full min-h-screen bg-gray-900 text-white">
-      <Navbar />
       <style jsx="true">{`
         @keyframes fadeIn {
           from {

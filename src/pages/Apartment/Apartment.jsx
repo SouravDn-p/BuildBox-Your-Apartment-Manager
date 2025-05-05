@@ -50,7 +50,7 @@ const Header = ({ header, title }) => {
 const Apartment = () => {
   const apartments = useLoaderData();
   return (
-    <section className="bg-gradient-to-br from-blue-900 via-indigo-800 to-teal-900 text-white min-h-screen">
+    <section className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white min-h-screen">
       <div className="pt-24 mx-auto max-w-screen-lg text-white">
         <Header
           header="Explore Available Apartments"

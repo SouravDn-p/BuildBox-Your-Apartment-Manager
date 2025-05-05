@@ -68,34 +68,9 @@ const Footer = () => {
       className={`relative py-10 ${
         isDarkMode
           ? "bg-gray-900"
-          : "bg-gradient-to-r from-blue-600 to-blue-400"
+          : "bg-gradient-to-r from-gray-900 to-gray-950"
       } backdrop-blur-md`}
     >
-      {/* Particles */}
-      {showParticles && (
-        <Particles
-          id="tsparticles"
-          init={particlesInit}
-          options={{
-            fullScreen: { enable: false },
-            background: { color: { value: "transparent" } },
-            particles: {
-              color: { value: isDarkMode ? "#ffffff" : "#2d2d2d" },
-              links: {
-                enable: true,
-                color: isDarkMode ? "#ffffff" : "#1e3a8a",
-                distance: 100,
-              },
-              move: { enable: true, speed: 1 },
-              number: { value: 100 },
-              size: { value: 3 },
-              opacity: { value: 0.5 },
-            },
-          }}
-          className="absolute inset-0 z-0"
-        />
-      )}
-
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/60 z-0"></div>
 
