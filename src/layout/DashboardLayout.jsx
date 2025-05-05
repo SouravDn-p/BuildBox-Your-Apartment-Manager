@@ -672,7 +672,7 @@ const DashboardLayout = () => {
       </div>
 
       <div className="flex-1">
-        <nav className="bg-gray-900 p-4 shadow-lg">
+        <nav className="bg-blue-950 p-4 shadow-lg">
           <div className="container mx-auto flex justify-between items-center">
             <div className="flex items-center space-x-4">
               <img

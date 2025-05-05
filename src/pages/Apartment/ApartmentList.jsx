@@ -32,7 +32,7 @@ const ApartmentList = ({ apartments }) => {
   });
 
   return (
-    <div className="container mx-auto p-4 bg-gradient-to-br from-purple-900 to-indigo-800 rounded-xl shadow-2xl">
+    <div className="container mx-auto p-4 bg-gradient-to-br from-gray-950 to-gray-900 rounded-xl shadow-2xl">
       {/* Hero Section */}
       <div className="text-center mb-10 pt-6">
         <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-purple-400 mb-4">
